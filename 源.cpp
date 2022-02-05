@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <math.h>
+#include "binaryTree.h"
 
 using namespace std;
 
@@ -301,31 +302,35 @@ bool isValidSudoku(vector<vector<char>>& board)
 
 int main()
 {
-    vector<char> v1{ '5','3','.','.','7','.','.','.','.' };
-    vector<char> v2{ '5','.','.','1','9','5','.','.','.' };
-    vector<char> v3{ '.','9','8','.','.','.','.','6','.' };
-    vector<char> v4{ '8','.','.','.','6','.','.','.','3' };
-    vector<char> v5{ '4','.','.','8','.','3','.','.','1' };
-    vector<char> v6{ '7','.','.','.','2','.','.','.','6' };
-    vector<char> v7{ '.','6','.','.','.','.','2','8','.' };
-    vector<char> v8{ '.','.','.','4','1','9','.','.','5' };
-    vector<char> v9{ '.','.','.','.','8','.','.','7','9' };
-    vector<vector<char>> v;
-    v.push_back(v1);
-    v.push_back(v2);
-    v.push_back(v3);
-    v.push_back(v4);
-    v.push_back(v5);
-    v.push_back(v6);
-    v.push_back(v7);
-    v.push_back(v8);
-    v.push_back(v9);
-
-
-    bool res = isValidSudoku(v);
    
 
+    vector<int> nums{ 0,1,2,3,4,5 };
+    TreeNode* root = sortedArrayToBST(nums);
 
+    //vector<vector<int>> res = levelOrder(root);
+    //vector<int> res = inorderTraversal(root);
+    //vector<vector<int>> vec;
+    /*vector<int> v1{ 1,2,3 };
+    vector<int> v2{ 4,5,6 };
+    vec.push_back(v1);
+    vec.push_back(v2);*/
+    //vec[1][1] = 0;
+    //int num = vec[1][1];
+    //int i = numTrees(3);
+    //vector<vector<int>> tmp = zigzagLevelOrder(root);
 
+    ///*vector<int> pre{ 3,9,20,15,7 };
+    //vector<int> in{ 9,3,15,20,7 };
+    //vector<int> post{ 9,15,7,20,3 };
+    //TreeNode* root1 = backbuildTree(in, post);*/
+    
+
+    TreeNode* node3 = new TreeNode(3);
+    TreeNode* node4 = new TreeNode(4);
+    TreeNode* node6 = new TreeNode(6);
+    TreeNode* node2 = new TreeNode(2,node3,node4);
+    TreeNode* node5 = new TreeNode(5,nullptr,node6);
+    TreeNode* node1 = new TreeNode(1,node2,node5);
+    flatten(node1);
     return 0;
 }
