@@ -7,6 +7,11 @@
 #include <map>
 #include <math.h>
 #include "binaryTree.h"
+#include "LFUCache.h"
+#include "slidingWindow.h"
+#include "linkList.h"
+#include "sort.h"
+#include "dp.h"
 
 using namespace std;
 
@@ -325,12 +330,16 @@ int main()
     //TreeNode* root1 = backbuildTree(in, post);*/
     
 
-    TreeNode* node3 = new TreeNode(3);
-    TreeNode* node4 = new TreeNode(4);
-    TreeNode* node6 = new TreeNode(6);
-    TreeNode* node2 = new TreeNode(2,node3,node4);
-    TreeNode* node5 = new TreeNode(5,nullptr,node6);
-    TreeNode* node1 = new TreeNode(1,node2,node5);
-    flatten(node1);
+    /*treenode* node3 = new treenode(3);
+    treenode* node4 = new treenode(4);
+    treenode* node6 = new treenode(6);
+    treenode* node2 = new treenode(2,node3,node4);
+    treenode* node5 = new treenode(5,nullptr,node6);
+    treenode* node1 = new treenode(1,node2,node5);
+    flatten(node1);*/
+    
+    test_312();
+    
+
     return 0;
 }

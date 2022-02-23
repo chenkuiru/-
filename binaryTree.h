@@ -6,6 +6,7 @@
 #include <map>
 #include <queue>
 #include <deque>
+#include "parameters.h"
 
 using namespace std;
 
@@ -1016,13 +1017,13 @@ vector<vector<int>> levelOrderBottom(TreeNode* root) {
 	}
 	return res;
 }
-struct ListNode {
-	int val;
-	ListNode* next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x, ListNode* next) : val(x), next(next) {}
-};
+//struct ListNode {
+//	int val;
+//	ListNode* next;
+//	ListNode() : val(0), next(nullptr) {}
+//	ListNode(int x) : val(x), next(nullptr) {}
+//	ListNode(int x, ListNode* next) : val(x), next(next) {}
+//};
 //109. ÓÐÐòÁ´±í×ª»»¶þ²æËÑË÷Ê÷
 int findLength(ListNode* head)
 {
