@@ -410,3 +410,4 @@ void test_312()
 	int res = maxCoins(v);
 	cout << "res=" << res << endl;
 }
+
