@@ -338,7 +338,7 @@ int main()
     treenode* node1 = new treenode(1,node2,node5);
     flatten(node1);*/
     
-    test_312();
+    test_1024();
     
 
     return 0;

@@ -1,11 +1,11 @@
-#pragma once
-//¶¯Ì¬¹æ»®
+ï»¿#pragma once
+//åŠ¨æ€è§„åˆ’,è´ªå¿ƒç®—æ³•
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-//53×î´óÁ¬Ğø×ÓÊı×éºÍ
+//53æœ€å¤§è¿ç»­å­æ•°ç»„å’Œ
 int maxSubArray(vector<int>& nums) {
 	int length = nums.size();
 	if (length == 0) return 0;
@@ -23,7 +23,7 @@ int maxSubArray(vector<int>& nums) {
 }
 
 
-//300×î³¤ÉÏÉı×ÓĞòÁĞµÄ³¤¶È
+//300æœ€é•¿ä¸Šå‡å­åºåˆ—çš„é•¿åº¦
 int lengthOfLIS(vector<int>& nums) {
 	vector<int> dp(nums.size() ,1);
 	for (int i = 0; i < nums.size(); ++i)
@@ -45,7 +45,7 @@ void test_300()
 }
 
 
-//524. Í¨¹ıÉ¾³ı×ÖÄ¸Æ¥Åäµ½×ÖµäÀï×î³¤µ¥´Ê
+//524. é€šè¿‡åˆ é™¤å­—æ¯åŒ¹é…åˆ°å­—å…¸é‡Œæœ€é•¿å•è¯
 string findLongestWord_DP(string s, vector<string>& dic)
 {
 	sort(dic.rbegin(), dic.rend(), [](auto&& a, auto&& b) {return a.size() < b.size() || a.size() == b.size() && a > b; });
@@ -77,14 +77,14 @@ string findLongestWord_DP(string s, vector<string>& dic)
 	return ans;
 }
 
-//583. Á½¸ö×Ö·û´®µÄÉ¾³ı²Ù×÷
-//¸ø¶¨Á½¸öµ¥´Ê word1 ºÍ word2 £¬·µ»ØÊ¹µÃ word1 ºÍ  word2 ÏàÍ¬ËùĞèµÄ×îĞ¡²½Êı¡£
-//Ã¿²½ ¿ÉÒÔÉ¾³ıÈÎÒâÒ»¸ö×Ö·û´®ÖĞµÄÒ»¸ö×Ö·û¡£
+//583. ä¸¤ä¸ªå­—ç¬¦ä¸²çš„åˆ é™¤æ“ä½œ
+//ç»™å®šä¸¤ä¸ªå•è¯ word1 å’Œ word2 ï¼Œè¿”å›ä½¿å¾— word1 å’Œ  word2 ç›¸åŒæ‰€éœ€çš„æœ€å°æ­¥æ•°ã€‚
+//æ¯æ­¥ å¯ä»¥åˆ é™¤ä»»æ„ä¸€ä¸ªå­—ç¬¦ä¸²ä¸­çš„ä¸€ä¸ªå­—ç¬¦ã€‚
 //int minDistance(string word1, string word2) {
 //
 //}
 
-//1143. ×î³¤¹«¹²×ÓĞòÁĞ
+//1143. æœ€é•¿å…¬å…±å­åºåˆ—
 int longestCommonSubsequence(string text1, string text2) {
 	int len1 = text1.length();
 	int len2 = text2.length();
@@ -110,8 +110,8 @@ int longestCommonSubsequence(string text1, string text2) {
 
 
 
-//712. Á½¸ö×Ö·û´®µÄ×îĞ¡ASCIIÉ¾³ıºÍ
-//¸ø¶¨Á½¸ö×Ö·û´®s1 ºÍ s2£¬·µ»Ø Ê¹Á½¸ö×Ö·û´®ÏàµÈËùĞèÉ¾³ı×Ö·ûµÄ ASCII ÖµµÄ×îĞ¡ºÍ ¡£
+//712. ä¸¤ä¸ªå­—ç¬¦ä¸²çš„æœ€å°ASCIIåˆ é™¤å’Œ
+//ç»™å®šä¸¤ä¸ªå­—ç¬¦ä¸²s1 å’Œ s2ï¼Œè¿”å› ä½¿ä¸¤ä¸ªå­—ç¬¦ä¸²ç›¸ç­‰æ‰€éœ€åˆ é™¤å­—ç¬¦çš„ ASCII å€¼çš„æœ€å°å’Œ ã€‚
 int minimumDeleteSum(string s1, string s2) {
 	int len1 = s1.length();
 	int len2 = s2.length();
@@ -155,7 +155,7 @@ void test_1143()
 	cout << res << endl;
 }
 
-//516×î³¤»ØÎÄ×ÓĞòÁĞ(µ¥×Ö·û´®Ê¹ÓÃ¶şÎ¬dpÊı×é£©Ò²¿ÉÒÔ½«×Ö·û´®·´×ªÈ»ºóÇó×î³¤¹«¹²×ÓĞòÁĞ
+//516æœ€é•¿å›æ–‡å­åºåˆ—(å•å­—ç¬¦ä¸²ä½¿ç”¨äºŒç»´dpæ•°ç»„ï¼‰ä¹Ÿå¯ä»¥å°†å­—ç¬¦ä¸²åè½¬ç„¶åæ±‚æœ€é•¿å…¬å…±å­åºåˆ—
 int longestPalindromeSubseq(string s) {
 	int n = s.size();
 	vector<vector<int>> dp(n, vector<int>(n, 0));
@@ -163,7 +163,7 @@ int longestPalindromeSubseq(string s) {
 	{
 		dp[i][i] = 1;
 	}
-	//dp[i][j]´ú±í×Ö·û´®s[i...j]ÖĞ×î³¤»ØÎÄ×ÓĞòÁĞ³¤¶È
+	//dp[i][j]ä»£è¡¨å­—ç¬¦ä¸²s[i...j]ä¸­æœ€é•¿å›æ–‡å­åºåˆ—é•¿åº¦
 	for (int i = n - 1; i >= 0; i--)
 	{
 		for (int j = i + 1; j < n; j++)
@@ -182,11 +182,11 @@ int longestPalindromeSubseq(string s) {
 	return dp[0][n - 1];
 }
 
-//0-1±³°üÎÊÌâ
+//0-1èƒŒåŒ…é—®é¢˜
 int knapsack(int W, int N, vector<int>& wt, vector<int>& val)
 {
 	vector<vector<int>> dp(N + 1, vector<int>(W + 1, 0));
-	//dp[i][w]±íÊ¾¶ÔÓÚÇ°i¸öÎïÆ·µ±Ç°±³°üÈİÁ¿ÎªwÊ±£¬ÄÜ¹»×°ÏÂµÄ×î´ó¼ÛÖµ
+	//dp[i][w]è¡¨ç¤ºå¯¹äºå‰iä¸ªç‰©å“å½“å‰èƒŒåŒ…å®¹é‡ä¸ºwæ—¶ï¼Œèƒ½å¤Ÿè£…ä¸‹çš„æœ€å¤§ä»·å€¼
 	for (int i = 1; i <= N; i++)
 	{
 		for (int w = 1; w <= W; w++)
@@ -205,7 +205,7 @@ int knapsack(int W, int N, vector<int>& wt, vector<int>& val)
 	return dp[N][W];
 }
 
-int knapsack_2(int W, int N, vector<int>& wt, vector<int>& val)//µÈ´ıÓÃ»ØËİÖØĞ´Ò»ÏÂ
+int knapsack_2(int W, int N, vector<int>& wt, vector<int>& val)//ç­‰å¾…ç”¨å›æº¯é‡å†™ä¸€ä¸‹
 {
 	vector<int> dp(W + 1, 0);
 	for (int i = 0; i < dp.size(); i++)
@@ -219,8 +219,8 @@ int knapsack_2(int W, int N, vector<int>& wt, vector<int>& val)//µÈ´ıÓÃ»ØËİÖØĞ´Ò
 	return dp[W];
 }
 
-//416·Ö¸îµÈºÍ×Ó¼¯
-//¸øÄãÒ»¸ö Ö»°üº¬ÕıÕûÊı µÄ ·Ç¿Õ Êı×é nums ¡£ÇëÄãÅĞ¶ÏÊÇ·ñ¿ÉÒÔ½«Õâ¸öÊı×é·Ö¸î³ÉÁ½¸ö×Ó¼¯£¬Ê¹µÃÁ½¸ö×Ó¼¯µÄÔªËØºÍÏàµÈ¡£
+//416åˆ†å‰²ç­‰å’Œå­é›†
+//ç»™ä½ ä¸€ä¸ª åªåŒ…å«æ­£æ•´æ•° çš„ éç©º æ•°ç»„ nums ã€‚è¯·ä½ åˆ¤æ–­æ˜¯å¦å¯ä»¥å°†è¿™ä¸ªæ•°ç»„åˆ†å‰²æˆä¸¤ä¸ªå­é›†ï¼Œä½¿å¾—ä¸¤ä¸ªå­é›†çš„å…ƒç´ å’Œç›¸ç­‰ã€‚
 bool canPartition(vector<int>& nums) {
 	int sum = 0;
 	for (int num : nums) sum += num;
@@ -250,7 +250,7 @@ bool canPartition(vector<int>& nums) {
 	return dp[n][sum];
 }
 
-//ÍêÈ«±³°üÎÊÌâ
+//å®Œå…¨èƒŒåŒ…é—®é¢˜
 int change(int amount, vector<int> coins)
 {
 	int n = coins.size();
@@ -277,8 +277,8 @@ int change(int amount, vector<int> coins)
 	return dp[n][amount];
 }
 
-//719K Õ¾ÖĞ×ªÄÚ×î±ãÒËµÄº½°à
-unordered_map<int, vector<vector<int>>> indegree;//key-Ä¿µÄµØ value-[³ö·¢µØ£¬Æ±Ç®]
+//719K ç«™ä¸­è½¬å†…æœ€ä¾¿å®œçš„èˆªç­
+unordered_map<int, vector<vector<int>>> indegree;//key-ç›®çš„åœ° value-[å‡ºå‘åœ°ï¼Œç¥¨é’±]
 static int g_src = 0;
 static int g_dst = 0;
 
@@ -340,7 +340,7 @@ void test_719()
 	int res = findCheapestPrice(n, flights, src, dst, k);
 	cout << "res=" << res;
 }
-//10. ÕıÔò±í´ïÊ½Æ¥Åä
+//10. æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…
 bool isMatch(string s, string p) {
 	int m = s.size();
 	int n = p.size();
@@ -377,7 +377,7 @@ bool isMatch(string s, string p) {
 	return f[m][n];
 }
 
-//312´ÁÆøÇò
+//312æˆ³æ°”çƒ
 int maxCoins(vector<int>& nums) {
 	int n = nums.size();
 	vector<int> points(n + 2, 1);
@@ -386,7 +386,7 @@ int maxCoins(vector<int>& nums) {
 		points[i + 1] = nums[i];
 	}
 
-	//¶¨Òådp[i][j]ÎªÔÚ(i,j)·¶Î§ÄÚÑ¡Ôñ×îºóÔúÆÆµÚk¸öÆøÇò»ñÈ¡µ½µÄ×î´ó½ğ¶î
+	//å®šä¹‰dp[i][j]ä¸ºåœ¨(i,j)èŒƒå›´å†…é€‰æ‹©æœ€åæ‰ç ´ç¬¬kä¸ªæ°”çƒè·å–åˆ°çš„æœ€å¤§é‡‘é¢
 	//dp[i][j]=dp[i][k]+dp[k][j]+nums[k]*nums[i]*nums[j]
 
 	vector<vector<int>> dp(n + 2, vector<int>(n + 2, 0));
@@ -404,10 +404,227 @@ int maxCoins(vector<int>& nums) {
 	return dp[0][n + 1];
 }
 
+//198 æ‰“å®¶åŠ«èˆ1
+int rob(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> dp(n + 2, 0);
+
+	for (int i = 2; i < n+2; i++)
+	{
+		dp[i] = max(dp[i - 1], dp[i - 2] + nums[i - 2]);
+	}
+	return dp[n + 1];
+}
+
+int rob_simple(vector<int>& nums) {
+	int n = nums.size();
+	int state1 = 0, state2 = 0;
+	for (int i = 0; i < n ; i++)
+	{
+		int tmp = max(state1, state2 + nums[i]);
+		state2 = state1;
+		state1 = tmp;
+	}
+	return state1;
+}
+
+//213æ‰“å®¶åŠ«èˆ2
+//è¿™ä¸ªåœ°æ–¹æ‰€æœ‰çš„æˆ¿å±‹éƒ½ å›´æˆä¸€åœˆ ï¼Œè¿™æ„å‘³ç€ç¬¬ä¸€ä¸ªæˆ¿å±‹å’Œæœ€åä¸€ä¸ªæˆ¿å±‹æ˜¯ç´§æŒ¨ç€çš„
+int rob_helper(vector<int>& nums,int start,int end) {
+	int n = nums.size();
+	int state1 = 0, state2 = 0;
+	for (int i = start; i <= end; i++)
+	{
+		int tmp = max(state1, state2 + nums[i]);
+		state2 = state1;
+		state1 = tmp;
+	}
+	return state1;
+}
+int rob_v2(vector<int>& nums) {
+	int n = nums.size();
+	if (n == 1) return nums[0];
+	return max(rob_helper(nums, 0, n - 2),
+		rob_helper(nums, 1, n - 1));
+
+}
+
+//337æ‰“å®¶åŠ«èˆ3 
+//æˆ¿å±‹åœ¨äºŒå‰æ ‘ä¸Šï¼Œä¸èƒ½å†ç›¸è¿çš„èŠ‚ç‚¹ä¸Šå·
+vector<int> rob_tree(TreeNode* root)
+{
+	if (root == nullptr) return vector<int>(2, 0);
+	auto left = rob_tree(root->left);
+	auto right = rob_tree(root->right);
+
+	int rob = root->val + left[0] + right[0];
+	int not_rob = max(left[0], left[1]) + max(right[0], right[1]);
+	return vector<int>({ not_rob,rob });
+}
+int rob_v3(TreeNode* root) {
+	auto res = rob_tree(root);
+	return max(res[0], res[1]);
+}
+
 void test_312()
 {
-	vector<int> v{ 3,1,5,8 };
-	int res = maxCoins(v);
+	vector<int> v{ 2,3,2 };
+	int res = rob_v2(v);
+	cout << "res=" << res << endl;
+}
+//1312 è®©å­—ç¬¦ä¸²æˆä¸ºå›æ–‡ä¸²çš„æœ€å°‘æ’å…¥æ¬¡æ•°
+int minInsertions(string s) {
+	int n = s.length();
+	vector<vector<int>> dp(n, vector<int>(n, 0));
+	for (int i = n-1; i >= 0; i--)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (s[i] == s[j])
+			{
+				dp[i][j] = dp[i + 1][j - 1];
+			}
+			else
+			{
+				dp[i][j] = min(dp[i + 1][j]+1, dp[i][j - 1]+1);
+			}
+		}
+	}
+	return dp[0][n - 1];
+}
+void test_1312()
+{
+	string s = "mbadm";
+	int res = minInsertions(s);
+	cout << "res=" << res << endl;
+}
+
+//435ç»™å®šä¸€ä¸ªåŒºé—´çš„é›†åˆÂ intervalsÂ ï¼Œå…¶ä¸­ intervals[i] = [starti, endi]Â ã€‚è¿”å› éœ€è¦ç§»é™¤åŒºé—´çš„æœ€å°æ•°é‡ï¼Œä½¿å‰©ä½™åŒºé—´äº’ä¸é‡å Â ã€‚
+int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+	int n = intervals.size();
+	if (n == 0)return 0;
+	sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b) {
+		return a[1] < b[1];
+	});
+	int count = 1;
+	int end = intervals[0][1];
+	for (int i=1;i<n;i++)
+	{
+		int start = intervals[i][0];
+		if (start >= end)
+		{
+			count++;
+			end = intervals[i][1];
+		}
+	}
+
+	return n - count;
+}
+
+//452 ç”¨æœ€å°‘æ•°é‡çš„ç®­å¼•çˆ†æ°”çƒ
+int findMinArrowShots(vector<vector<int>>& points) {
+	int n = points.size();
+	if (n == 0)return 0;
+	sort(points.begin(), points.end(), [](const vector<int> &a, const vector<int> &b) {
+		return a[1] < b[1];
+	});
+	int count = 1;
+	int end = points[0][1];
+	for (int i = 1; i < n; i++)
+	{
+		int start = points[i][0];
+		if (start > end)
+		{
+			count++;
+			end = points[i][1];
+		}
+	}
+
+	return count;
+}
+
+void test_435()
+{
+	vector<vector<int>> intervals{
+		{1,2},{2,3},{3,4},{4,5}
+	};
+	int res = findMinArrowShots(intervals);
+	cout << "res=" << res << endl;
+}
+
+//252ä¼šè®®å®¤
+int minMeetingRoom(vector<vector<int>>& meetings)
+{
+	int n = meetings.size();
+	vector<int> begin(n, 0);
+	vector<int> end(n, 0);
+
+	for (int i = 0; i < n; i++)
+	{
+		begin.push_back(meetings[i][0]);
+		end.push_back(meetings[i][1]);
+	}
+	sort(begin.begin(), begin.end());
+	sort(end.begin(), end.end());
+
+	int i = 0, j = 0,count = 0,res = 0;
+	while (i < n && j < n)
+	{
+		if (begin[i] < end[i])
+		{
+			i++;
+			count++;
+		}
+		else
+		{
+			j++;
+			count--;
+		}
+		res = max(res, count);
+	}
+
+	return res;
+}
+
+//1024 è§†é¢‘æ‹¼æ¥
+int videoStitching(vector<vector<int>>& clips, int time) {
+	int n = clips.size();
+	sort(clips.begin(), clips.end(), [](const vector<int>& a, const vector<int>& b) {
+		if (a[0] != b[0])
+		{
+			return a[0] < b[0];
+		}
+		else
+		{
+			return a[1] > b[1];
+		}
+	});
+
+	if (clips[0][0] != 0)return -1;
+	int curend = 0, nextend = 0,count = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (clips[i][1] > curend && clips[i][0] <= curend)
+		{
+			count++;
+			curend = clips[i][1];
+			cout << clips[i][0] << "-" << clips[i][1] << endl;
+		}
+	}
+	if (curend >= time)
+		return count;
+	else
+		return-1;
+}
+
+void test_1024()
+{
+	vector<vector<int>> v{
+		{0,1},{6,8},{0,2},{5,6},{0,4},{0,3},
+		{6,7},{1,3},{4,7},{1,4},{2,5},{2,6},
+		{3,4},{4,5},{5,7},{6,9}
+	};
+	int res = videoStitching(v,9);
 	cout << "res=" << res << endl;
 }
 
