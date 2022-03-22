@@ -6,6 +6,7 @@
 #include <map>
 #include <queue>
 #include <deque>
+#include <string>
 #include "parameters.h"
 
 using namespace std;
@@ -1267,3 +1268,110 @@ Node* connect2(Node* root) {
 	}
 }
 
+//208. 实现 Trie (前缀树)
+class Trie {
+public:
+	Trie():children(26) {
+
+	}
+
+	void insert(string word) {
+		Trie* node = this;
+		for (auto ch : word)
+		{
+			if (node->children[ch - 'a'] == nullptr)
+			{
+				node->children[ch - 'a'] = new Trie();
+			}
+			node = node->children[ch - 'a'];
+		}
+		node->isend = true;
+	}
+
+	bool search(string word) {
+		Trie* node = this;
+		for (auto str : word)
+		{
+			node = node->children[str - 'a'];
+			if (node == nullptr)
+				return false;
+		}
+		return node->isend;
+	}
+
+	bool startsWith(string prefix) {
+		Trie* node = this;
+		for (auto str : prefix)
+		{
+			node = node->children[str - 'a'];
+			if (node == nullptr)
+				return false;
+		}
+		return true;
+	}
+private:
+	bool isend = false;
+	vector<Trie*> children;
+};
+
+//606根据二叉树创建字符串
+void tree2str_help(TreeNode* root, string& res)
+{
+	if (root == nullptr)
+	{
+		res += "";
+		return;
+	}
+	if (root->left && root->right)
+	{
+		res += to_string(root->val);
+	}
+	if (root->left == nullptr && root->right == nullptr)
+	{
+		res += to_string(root->val);
+	}
+	
+	if (root->left)
+		tree2str_help(root->left,res);
+	if(root->right)
+		tree2str_help(root->right, res);
+	res += ")";
+}
+string tree2str(TreeNode* root) {
+	if (root == nullptr)
+		return "";
+	if (root->left && root->right)
+	{
+		return to_string(root->val) + '(' + tree2str(root->left) + ')' + '(' +
+			tree2str(root->right) + ')';
+	}
+	if (root->left == nullptr && root->right == nullptr)
+	{
+		return to_string(root->val);
+	}
+	if (root->left != nullptr && root->right == nullptr)
+	{
+		return to_string(root->val) + '(' + tree2str(root->left) + ')' ;
+	}
+	if (root->left == nullptr && root->right != nullptr)
+	{
+		return to_string(root->val) + '(' + ')' + '(' +
+			tree2str(root->right) + ')';
+	}
+
+}
+
+void test606()
+{
+	/*TreeNode* node3 = new TreeNode(3);
+	TreeNode* node4 = new TreeNode(4);
+	TreeNode* node2 = new TreeNode(2,node4,nullptr);
+	TreeNode* node1 = new TreeNode(1,node2,node3);*/
+
+	TreeNode* node3 = new TreeNode(3);
+	TreeNode* node4 = new TreeNode(4);
+	TreeNode* node2 = new TreeNode(2, node4, nullptr);
+	TreeNode* node1 = new TreeNode(1, node2, node3);
+	auto res = tree2str(node1);
+	cout << "res = " << res << endl;
+}
