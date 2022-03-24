@@ -340,21 +340,8 @@ int main()
     treenode* node1 = new treenode(1,node2,node5);
     flatten(node1);*/
     
-    test20();
-    string s = " ";
-    auto t1 = s.find_first_not_of(' ');
-    auto t2 = s.find_last_not_of(' ');
-    string p = s.substr(1,2);
-    int len = s.size();
+    offer::test35();
 
-    int index = 0;
-    for (; index < len; index++)
-    {
-        if (s[index] != ' ')
-            break;
-    }
-    if (index == len) return false;
-    string z = s.substr(index, len-1);
 
     return 0;
 }

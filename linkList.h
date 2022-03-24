@@ -278,6 +278,48 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 	return quadruplets;
 }
 
+//21合并两个有序链表
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+	ListNode* head = new ListNode(0);
+	auto tmp = head;
+
+	while (list1 && list2)
+	{
+		if (list1->val <= list2->val)
+		{
+			head->next = list1;
+			list1 = list1->next;
+		}
+		else
+		{
+			head->next = list2;
+			list2 = list2->next;
+		}
+		head = head->next;
+	}
+	
+	head->next = list1 == nullptr ? list2 : list1;
+	
+	return tmp->next;
+}
+
+void testlt21()
+{
+	ListNode* no1 = new ListNode(1);
+	ListNode* no2 = new ListNode(2);
+	ListNode* no3 = new ListNode(4);
+	ListNode* no4 = new ListNode(1);
+	ListNode* no5 = new ListNode(3);
+	ListNode* no6 = new ListNode(4);
+	no1->next = no2;
+	no2->next = no3;
+	no4->next = no5;
+	no5->next = no6;
+
+	auto res = mergeTwoLists(nullptr, nullptr);
+	cout << "res = " << endl;
+}
+
 //27原地移除元素某个指定元素
 int removeElement(vector<int>& nums, int val) {
 	if (nums.size() == 0) return 0;
@@ -745,6 +787,22 @@ void merge_an88(vector<int>& nums1, int m, vector<int>& nums2, int n) {
 		nums1[tail--] = cur;
 	}
 }
+
+//141.环形链表
+bool hasCycle(ListNode* head) {
+	if (head == nullptr || head->next == nullptr)return false;
+	auto slow = head;
+	auto fast = head;
+	while (fast->next && fast->next->next)
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+		if (slow == fast)
+			return true;
+	}
+	return false;
+}
+
 
 //457环形数组
 bool circularArrayLoop(vector<int>& nums) {

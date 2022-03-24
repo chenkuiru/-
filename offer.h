@@ -746,9 +746,9 @@ void test18()
 //19正则表达式匹配
 bool isMatch_helper(const string &s, const string &p, int sindex, int pindex)
 {
-	if (sindex == s.size() - 1 && pindex == p.size() - 1)
+	if (sindex >= s.size() && pindex >= p.size())
 		return true;
-	if (sindex != s.size() - 1 && pindex == p.size() - 1)
+	if (sindex < s.size()  && pindex >= p.size())
 		return false;
 
 	if (p[pindex + 1] == '*')
@@ -772,9 +772,19 @@ bool isMatch_helper(const string &s, const string &p, int sindex, int pindex)
 }
 bool isMatch_19(string s, string p)
 {
-	if (s.size() == 0 || p.size() == 0)return false;
+	
+	if (p.size() == 0 && s.size() == 0)return true;
+	if (p.size() == 0)return false;
 
 	return isMatch_helper(s, p, 0, 0);
+}
+
+void test19()
+{
+	string s = "";
+	string p = ".*";
+	auto res = isMatch_19(s, p);
+	cout << "res = " << res << endl;
 }
 
 //20表示数值的字符串
@@ -981,4 +991,635 @@ void test20()
 	Solution20 s;
 	auto res = s.isNumber(str);
 	auto res2 = isNumber2(str);
+}
+
+//21调整数组顺序使奇数位于偶数前面
+vector<int> exchange(vector<int>& nums) {
+	int len = nums.size();
+	int left = 0;
+	int right = len - 1;
+	while (left < right)
+	{
+		while(nums[left] % 2 == 1 && left<len-1)
+			left++;
+		while (nums[right] % 2 == 0 && right>0)
+		{
+			right--;
+		}
+		if (left < right)
+		{
+			swap(nums[left], nums[right]);
+		}
+	}
+
+	return nums;
+}
+
+void test21()
+{
+	vector<int> v{ 1,3,5 };
+	auto res = exchange(v);
+	cout << "ok" << endl;
+}
+
+//22链表中倒数第k个节点
+ListNode* getKthFromEnd(ListNode* head, int k) {
+	//k可能大于链表长度，先求链表长度再取余
+	auto tmp = head;
+	int count = 0;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	if (count == 0)return nullptr;
+	int use_k = k % count;
+	if (use_k == 0)return head;
+
+	auto fast = head;
+	auto slow = head;
+	for (int i = 1; i < use_k; i++)
+	{
+		fast = fast->next;
+	}
+
+	while (fast->next)
+	{
+		fast = fast->next;
+		slow = slow->next;
+	}
+	return slow;
+}
+
+
+
+//24反转链表
+ListNode* reverseList(ListNode* head) {
+	if (head == nullptr) return nullptr;
+	ListNode* pre = nullptr;
+	ListNode* cur = head;
+	while (cur->next)
+	{
+		auto tmp = cur->next;
+		cur->next = pre;
+		pre = cur;
+		cur = tmp;
+	}
+	cur->next = pre;
+	return cur;
+}
+
+void test22()
+{
+	ListNode* Node1 = new ListNode(1);
+	/*ListNode* Node2 = new ListNode(2);
+	ListNode* Node3 = new ListNode(3);
+	Node1->next = Node2;
+	Node2->next = Node3;
+	ListNode* Node4 = new ListNode(4);
+	ListNode* Node5 = new ListNode(5);
+	Node4->next = Node5;
+	Node3->next = Node4;*/
+
+	auto res = reverseList(Node1);
+	cout << "ok" << endl;
+}
+
+//26树的子结构
+bool isSubtree(TreeNode* A, TreeNode* B)
+{
+	if (B == nullptr)return true;
+	if (A == nullptr)return false;
+	if (A->val != B->val)
+		return false;
+
+	return isSubtree(A->left, B->left) && isSubtree(A->right, B->right);
+}
+bool isSubStructure(TreeNode* A, TreeNode* B) {
+	if (A == nullptr && B == nullptr) return true;
+	if (A == nullptr || B == nullptr)return false;
+	bool res = false;
+	if (A->val == B->val)
+	{
+		res = isSubtree(A, B);
+	}
+	if(!res)
+	{
+		res = isSubStructure(A->left, B) || isSubStructure(A->right, B);
+	}
+	
+	return res;
+}
+
+//27二叉树的镜像
+void sysTree(TreeNode* root)
+{
+	if (root == nullptr) return;
+	auto tmp = root->left;
+	root->left = root->right;
+	root->right = tmp;
+	sysTree(root->left);
+	sysTree(root->right);
+	return;
+}
+TreeNode* mirrorTree(TreeNode* root) {
+	sysTree(root);
+	return root;
+}
+
+//28对称二叉树
+bool isSymmetric_helper(TreeNode* root1,TreeNode* root2)
+{
+	if (root1 == nullptr && root2 == nullptr) return true;
+	if (root1 == nullptr || root2 == nullptr)return false;
+	if (root1->val != root2->val)
+		return false;
+	return isSymmetric_helper(root1->left, root2->right) && isSymmetric_helper(root1->right, root2->left);
+}
+bool isSymmetric_offer(TreeNode* root) {
+	return isSymmetric_helper(root, root);
+}
+void test26()
+{
+	/*TreeNode* root1 = new TreeNode(3);
+	TreeNode* root2 = new TreeNode(4);
+	TreeNode* root3 = new TreeNode(5);
+	TreeNode* root4 = new TreeNode(1);
+	TreeNode* root5 = new TreeNode(2);
+	root1->left = root2;
+	root1->right = root3;
+	root2->left = root4;
+	root2->right = root5;*/
+	TreeNode* root1 = new TreeNode(1);
+	TreeNode* root2 = new TreeNode(2);
+	TreeNode* root3 = new TreeNode(2);
+	root1->left = root2;
+	root1->right = root3;
+	TreeNode* root4 = new TreeNode(3);
+	TreeNode* root5 = new TreeNode(4);
+	TreeNode* root6 = new TreeNode(4);
+	TreeNode* root7 = new TreeNode(3);
+	root2->left = root4;
+	root2->right = root5;
+	root3->left = root6;
+	root3->right = root7;
+	/*TreeNode* root8 = new TreeNode(8);
+	TreeNode* root9 = new TreeNode(9);
+	root4->left = root8;
+	root4->right = root9;*/
+	TreeNode* node1 = new TreeNode(4);
+	TreeNode* node2 = new TreeNode(8);
+	TreeNode* node3 = new TreeNode(9);
+	node1->left = node2;
+	node1->right = node3;
+	auto res = isSymmetric_offer(root1);
+	cout << "res = " << "ok" << endl;
+}
+
+//29顺时针打印矩阵
+void spiralOrder(vector<vector<int>>& matrix, int index,  int rows, int cols, vector<int>& res)
+{
+	int endx = cols - 1 - index;
+	int endy = rows - 1 - index;
+	//横着打一行-->
+	for (int i = index; i <= endx; i++)
+	{
+		int number = matrix[index][i];
+		res.push_back(number);
+	}
+	//方向向下
+	if (index < endy)
+	{
+		for (int i = index+1; i <=endy; i++)
+		{
+			int number = matrix[i][endx];
+			res.push_back(number);
+		}
+	}
+	//方向向左
+	if (index <endx && index<endy)
+	{
+		for (int i = endx-1; i >=index; i--)
+		{
+			int number = matrix[endy][i];
+			res.push_back(number);
+		}
+	}
+	//方向向上
+	if (index < endy - 1 && index < endx)
+	{
+		for (int i = endy-1; i > index ; i--)
+		{
+			int number = matrix[i][index];
+			res.push_back(number);
+		}
+	}
+}
+vector<int> spiralOrder(vector<vector<int>>& matrix) {
+	vector<int> res;
+	int rows = matrix.size();
+	if (rows == 0) return res;
+	int cols = matrix[0].size();
+	int start = 0;
+	
+	while (rows > start * 2 && cols > start * 2)
+	{
+		spiralOrder(matrix, start, rows, cols, res);
+		start++;
+	}
+	
+	return res;
+}
+
+void test29()
+{
+	vector<vector<int>> v{
+		{1,2,3},
+		{4,5,6},
+		{7,8,9},
+	};
+
+	auto res = spiralOrder(v);
+	cout << "res = " << endl;
+}
+
+//包含min函数的栈
+class MinStack {
+public:
+	/** initialize your data structure here. */
+	MinStack() {
+		
+	}
+
+	void push(int x) {
+		datastack.push(x);
+		if (minstack.size() == 0)
+		{
+			minstack.push(x);
+		}
+		else
+		{
+			if (x <= minstack.top())
+			{
+				minstack.push(x);
+			}
+		}
+			
+
+	}
+
+	void pop() {
+		if (datastack.size() == 0)return;
+		if (datastack.top() == minstack.top())
+		{
+			datastack.pop();
+			minstack.pop();
+		}
+		else
+		{
+			datastack.pop();
+		}
+	}
+
+	int top() {
+		if (datastack.size() == 0)
+		{
+			throw "stack is empty";
+			abort();
+		}
+			
+		return datastack.top();
+	}
+
+	int min() {
+		if (datastack.size() == 0 || minstack.size() == 0)
+		{
+			throw "stack is empty";
+			abort();
+		}
+		return minstack.top();
+	}
+
+private:
+	stack<int> datastack;
+	stack<int> minstack;
+};
+
+void test30()
+{
+	MinStack m;
+	auto tmp = m.top();
+	m.push(-2);
+	m.push(0);
+	m.push(-3);
+	auto res = m.min();
+	m.pop();
+	auto res2 = m.top();
+	auto res3 = m.min();
+}
+
+//31栈的压入，弹出序列
+bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+	int l1 = pushed.size();
+	int l2 = popped.size();
+	bool res = true;
+	int index2 = 0;
+	int index1 = 0;
+	stack<int> s;
+	while (index2 < l2)
+	{
+		while ((s.empty() || s.top() != popped[index2]) && index1 < l1)
+		{
+			s.push(pushed[index1]);
+			index1++;
+		}
+		if (index1 == l1)
+		{
+			if (s.top() != popped[index2])
+				return false;
+			
+		}
+		
+		index2++;
+		s.pop();
+	}
+	return res;
+}
+
+void test31()
+{
+	vector<int> v1{ 1,2,3,4,5 };
+	vector<int> v2{ 4,3,5,1,2 };
+	bool res = validateStackSequences(v1, v2);
+	cout << "res = " << res << endl;
+}
+
+//32 从上到下打印二叉树
+vector<int> levelOrder_offer(TreeNode* root) {
+	vector<int> res;
+	if (root == nullptr) return res;
+
+	deque<TreeNode*> node_deque;
+	node_deque.push_back(root);
+
+	while (!node_deque.empty())
+	{
+		int size = node_deque.size();
+		for (int i = 0; i < size; i++)
+		{
+			auto node = node_deque.front();
+			node_deque.pop_front();
+			res.push_back(node->val);
+			if (node->left)
+			{
+				node_deque.push_back(node->left);
+			}
+			if (node->right)
+			{
+				node_deque.push_back(node->right);
+			}
+		}
+	}
+	return res;
+}
+
+//32-2 从上到下打印二叉树 按层摆放
+vector<vector<int>> levelOrder_offer_v2(TreeNode* root) {
+	vector<vector<int>> res;
+	if (root == nullptr) return res;
+
+	deque<TreeNode*> node_deque;
+	node_deque.push_back(root);
+
+	while (!node_deque.empty())
+	{
+		int size = node_deque.size();
+		vector<int> tmp;
+		for (int i = 0; i < size; i++)
+		{
+			auto node = node_deque.front();
+			node_deque.pop_front();
+			tmp.push_back(node->val);
+			if (node->left)
+			{
+				node_deque.push_back(node->left);
+			}
+			if (node->right)
+			{
+				node_deque.push_back(node->right);
+			}
+		}
+		res.push_back(tmp);
+	}
+	return res;
+}
+
+//32-3 从上到下打印二叉树 按层摆放,"之"型摆放
+vector<vector<int>> levelOrder_offer_v3(TreeNode* root) {
+	vector<vector<int>> res;
+	if (root == nullptr) return res;
+
+	deque<TreeNode*> node_deque;
+	node_deque.push_back(root);
+	int index = 0;
+
+	while (!node_deque.empty())
+	{
+		int size = node_deque.size();
+		vector<int> tmp;
+		for (int i = 0; i < size; i++)
+		{
+			auto node = node_deque.front();
+			node_deque.pop_front();
+			tmp.push_back(node->val);
+			if (node->left)
+			{
+				node_deque.push_back(node->left);
+			}
+			if (node->right)
+			{
+				node_deque.push_back(node->right);
+			}
+		}
+		if (index % 2 != 0)
+		{
+			reverse(tmp.begin(), tmp.end());
+		}
+		res.push_back(tmp);
+		index++;
+	}
+	return res;
+}
+
+void test32()
+{
+	TreeNode* root1 = new TreeNode(1);
+	TreeNode* root2 = new TreeNode(2);
+	TreeNode* root3 = new TreeNode(3);
+	root1->left = root2;
+	root1->right = root3;
+	TreeNode* root4 = new TreeNode(3);
+	TreeNode* root5 = new TreeNode(4);
+	TreeNode* root6 = new TreeNode(4);
+	TreeNode* root7 = new TreeNode(5);
+	root2->left = root4;
+	root2->right = root5;
+	root3->left = root6;
+	root3->right = root7;
+
+	auto res = levelOrder_offer_v3(root1);
+	cout << "res = " << endl;
+}
+
+//33 二叉搜索树的后序遍历序列
+bool verifyPostorder_helper(vector<int>& postorder,int start, int end) {
+	if (start == end || start> end)return true;
+
+	int index = end - 1;
+	while (index >= start && postorder[index] > postorder[end])
+	{
+		index--;
+	}
+	//左子树范围为[start,index]，右子树范围为[index+1,end-1]
+	//检验左子树数值是不是都比root(postorder[end])小
+	for (int tmp = index; tmp >= start; tmp--)
+	{
+		if (postorder[tmp] >= postorder[end])
+			return false;
+	}
+	return verifyPostorder_helper(postorder, start, index) &&
+		verifyPostorder_helper(postorder, index + 1, end - 1);
+}
+bool verifyPostorder(vector<int>& postorder) {
+	int len = postorder.size();
+	if (len == 0) return false;
+	return verifyPostorder_helper(postorder, 0, len-1);
+}
+
+void test33()
+{
+	vector<int> v{ 5,4,3,2,1 };
+	bool res = verifyPostorder(v);
+	cout << "res = " << endl;
+}
+
+//34二叉树和为某一值的路径
+vector<vector<int>> res34;
+void pathSum_offer_helper(TreeNode* root, int &sum, int target, vector<int> &path)
+{
+	if (root == nullptr) return;
+	sum += root->val;
+	path.push_back(root->val);
+	//判断是否为叶子节点
+	if (root->left == nullptr && root->right==nullptr)
+	{
+		if (sum == target)
+		{
+			res34.push_back(path);
+		}
+	}
+	pathSum_offer_helper(root->left, sum, target, path);
+	pathSum_offer_helper(root->right, sum, target, path);
+	sum -= root->val;
+	path.pop_back();
+}
+vector<vector<int>> pathSum_offer(TreeNode* root, int target) {
+	if (root == nullptr) return res34;
+	vector<int> path;
+	int sum = 0;
+	pathSum_offer_helper(root, sum, target, path);
+	return res34;
+}
+
+void test34()
+{
+	TreeNode* root1 = new TreeNode(5);
+	TreeNode* root2 = new TreeNode(4);
+	TreeNode* root3 = new TreeNode(8);
+	root1->left = root2;
+	root1->right = root3;
+	TreeNode* root4 = new TreeNode(11);
+	TreeNode* root5 = new TreeNode(13);
+	TreeNode* root6 = new TreeNode(4);
+	root2->left = root4;
+	root3->left = root5;
+	root3->right = root6;
+	TreeNode* root7 = new TreeNode(7);
+	TreeNode* root8 = new TreeNode(2);
+	root4->left = root7;
+	root4->right = root8;
+	TreeNode* root9 = new TreeNode(5);
+	TreeNode* root10 = new TreeNode(1);
+	root6->left = root9;
+	root6->right = root10;
+
+	auto res = pathSum_offer(root1, 22);
+	cout << "res = " << endl;
+}
+
+//35复杂链表的复制
+namespace offer
+{
+	class Node {
+	public:
+		int val;
+		Node* next;
+		Node* random;
+
+		Node(int _val) {
+			val = _val;
+			next = NULL;
+			random = NULL;
+		}
+
+		Node(int _val,Node* _node):val(_val),next(_node),random(nullptr){}
+	};
+
+	Node* copyNode(Node* original, unordered_map<Node*, Node*> &nodemap)
+	{
+		if (original == nullptr) return nullptr;
+		Node* tmp = new Node(original->val);
+		nodemap.insert(pair<Node*, Node*>(original, tmp));
+		tmp->next = copyNode(original->next, nodemap);
+		return tmp;
+	}
+	Node* copyRandomList(Node* head) {
+		if (head == nullptr) return nullptr;
+		auto tmphead = head;
+		unordered_map<Node*, Node*> nodemap;
+		Node* clone = copyNode(tmphead, nodemap);
+		tmphead = head;
+		while (tmphead)
+		{
+			auto newnode = nodemap[tmphead];
+			auto nextRnode = tmphead->random;
+			newnode->random = nodemap[nextRnode];
+			tmphead = tmphead->next;
+		}
+		return clone;
+	}
+
+	void test35()
+	{
+		Node* node5 = new Node(1);
+		Node* node4 = new Node(10,node5);
+		Node* node3 = new Node(11,node4);
+		Node* node2 = new Node(13,node3);
+		Node* node1 = new Node(7,node2);
+		node1->random = nullptr;
+		node2->random = node1;
+		node3->random = node5;
+		node4->random = node3;
+		node5->random = node1;
+
+		auto res = copyRandomList(node1);
+		cout << "res = " << endl;
+	}
+}
+
+void test36()
+{
+	vector<string> v{ "1","2","3","4","5","nullptr","7" };
+	auto root = buildTree(v);
+	cout << "ok" << endl;
 }
