@@ -62,16 +62,7 @@ void mergeSort(vector<int> &arrays, int L, int R)
 	merge(arrays, L, M, R);
 }
 
-void test_mergeSort()
-{
-	vector<int> v{ 1,4,5,7,9,2 };
-	mergeSort(v, 0, 5);
-	for (auto a : v)
-	{
-		cout << a << endl;
-	}
 
-}
 
 //void mergeSort_2(vector<int>& arrays)
 //{
@@ -115,6 +106,75 @@ void test_mergeSort()
 //		}
 //	}
 //}
+
+
+//øÏÀŸ≈≈–Ú
+int Partition(vector<int>& arrays, int L, int R)
+{
+	int pivotValue = arrays[L];
+	while (L < R)
+	{
+		while (L < R && arrays[R] >= pivotValue)
+			R--;
+		swap(arrays[L], arrays[R]);
+		while (L < R && arrays[L] <= pivotValue)
+			L++;
+		swap(arrays[L], arrays[R]);
+
+	}
+	return L;
+}
+void quicksort(vector<int>& arrays, int L, int R)
+{
+	if (L >= R)return;
+	int pivot = Partition(arrays, L, R);
+	quicksort(arrays, L, pivot - 1);
+	quicksort(arrays, pivot + 1, R);
+
+}
+
+//√∞≈›≈≈–Ú
+void BubbleSort(vector<int>& arrays)
+{
+	int len = arrays.size();
+	for (int i = 0; i <len; i++)
+	{
+		for (int j = len - 1; j > i; j--)
+		{
+			if (arrays[j] < arrays[j - 1])
+			{
+				swap(arrays[j], arrays[j - 1]);
+			}
+		}
+	}
+}
+//≤Â»Î≈≈–Ú
+void InsertSort(vector<int>& arrays)
+{
+	int len = arrays.size();
+	for (int i = 1; i < len; i++)
+	{
+		int pre = i - 1, cur = i;
+		while (arrays[cur] < arrays[pre] && pre >= 0 )
+		{
+			swap(arrays[cur], arrays[pre]);
+			pre--;
+			cur--;
+		}
+	}
+}
+
+void test_mergeSort()
+{
+	vector<int> v{ 1,4,5,7,9,2 };
+	quicksort(v, 0, 5);
+	//InsertSort(v);
+	for (auto a : v)
+	{
+		cout << a << endl;
+	}
+
+}
 
 //287—∞’“÷ÿ∏¥ ˝
 int findDuplicate(vector<int>& nums) {

@@ -59,3 +59,98 @@ void testNo76()
 	auto res = minWindow(s, t);
 	cout << "res = " << res << endl;
 }
+//3无重复字符的最长子串
+int lengthOfLongestSubstring(string s) {
+	int left = 0, right = 0;
+	unordered_map<char, int> window;
+	int res = 0;
+	int len = s.size();
+	while (right < len)
+	{
+		char c = s[right];
+		window[c]++;
+		right++;
+
+		while (window[c] > 1)
+		{
+			char t = s[left];
+			left++;
+			window[t]--;
+		}
+		res = max(res, right - left);
+
+	}
+	return res;
+}
+
+void testlt3()
+{
+	string s = "pwwkew";
+	int res = lengthOfLongestSubstring(s);
+}
+
+
+//1004最大连续1的个数
+int longestOnes(vector<int>& nums, int k) {
+	int len = nums.size();
+	if (len == 0) return 0;
+	int left = 0, right = 0;
+	int ans = 0, sum = 0;
+	while (right < len)
+	{
+		if (nums[right] == 0)
+			sum++;
+		while (sum > k)
+		{
+			if (nums[left] == 0)
+				sum--;
+			left++;
+		}
+		ans = max(ans, right - left + 1);
+		right++;
+	}
+	return ans;
+}
+
+void test1004()
+{
+	vector<int> v{ 1,1,1,0,0,0,1,1,1,1,0 };
+	int num = longestOnes(v, 2);
+	cout << "ok" << endl;
+}
+
+//2024考试的最大困扰度
+int maxConsecutiveAnswers_helper(string answerKey, int k, char c) {
+	int left = 0, right = 0;
+	int sum = 0;
+	int ans = 0;
+	int len = answerKey.size();
+	while (right < len)
+	{
+		if (answerKey[right] != c)
+			sum++;
+		while (sum > k)
+		{
+			if (answerKey[left] != c)
+			{
+				sum--;
+			}
+			left++;
+				
+		}
+		ans = max(ans, right - left + 1);
+		right++;
+	}
+	return ans;
+}
+int maxConsecutiveAnswers(string answerKey, int k) {
+	return max(maxConsecutiveAnswers_helper(answerKey, k, 'T'),
+		maxConsecutiveAnswers_helper(answerKey, k, 'F'));
+}
+
+void test2024()
+{
+	string s = "TTFTTFTT";
+	int res = maxConsecutiveAnswers(s, 1);
+	cout << "res = " << res << endl;
+}

@@ -14,6 +14,8 @@
 #include "dp.h"
 #include "charstring.h"
 #include "offer.h"
+#include "backtrace.h"
+#include "niukewang.h"
 
 using namespace std;
 
@@ -340,7 +342,10 @@ int main()
     treenode* node1 = new treenode(1,node2,node5);
     flatten(node1);*/
     
-    offer::test35();
+    /*string str = "1234";
+    auto s = str.substr(0, 2);
+    int a = atoi(s.c_str());*/
+    test57_2_offer_test();
 
 
     return 0;

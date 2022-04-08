@@ -1375,3 +1375,54 @@ void test606()
 	auto res = tree2str(node1);
 	cout << "res = " << res << endl;
 }
+
+//429N叉树的层序遍历
+namespace ex429
+{
+	class Node {
+	public:
+		int val;
+		vector<Node*> children;
+
+		Node() {}
+
+		Node(int _val) {
+			val = _val;
+		}
+
+		Node(int _val, vector<Node*> _children) {
+			val = _val;
+			children = _children;
+		}
+	};
+
+	vector<vector<int>> levelOrder(Node* root) {
+		vector<vector<int>> res;
+		if (root == nullptr)
+			return res;
+		queue<Node*> nodeQueue;
+		nodeQueue.push(root);
+
+		while (!nodeQueue.empty())
+		{
+			deque<int> dequeTmp;
+			int size = nodeQueue.size();//赋值给他，避免添加子节点后队列size发生变化
+			for (int i = 0; i < size; i++)
+			{
+				auto node = nodeQueue.front();
+				nodeQueue.pop();
+				dequeTmp.push_back(node->val);
+				int nodenum = node->children.size();
+				for (int i = 0; i < nodenum; i++)
+				{
+					nodeQueue.push(node->children[i]);
+				}
+
+			}
+
+			vector<int> tmp{ dequeTmp.begin(),dequeTmp.end() };
+			res.push_back(tmp);
+		}
+		return res;
+	}
+}

@@ -25,7 +25,7 @@ struct TreeNode {
 };
 
 
-TreeNode* buildTree(const vector<string> &v)
+TreeNode* buildTree_construct(const vector<string> &v)
 {
 	int len = v.size();
 	if (len == 0)return nullptr;

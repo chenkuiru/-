@@ -6,6 +6,7 @@
 #include <string>
 #include <stack>
 #include <list>
+#include <set>
 #include <algorithm>
 #include <tuple>
 
@@ -1230,6 +1231,51 @@ vector<int> spiralOrder(vector<vector<int>>& matrix) {
 	
 	return res;
 }
+//转圈遍历
+vector<int> spiralOrder_ans(vector<vector<int>>& matrix)
+{
+	vector<int> res;
+	int rows = matrix.size();
+	if (rows == 0)return res;
+	int cols = matrix[0].size();
+	int left = 0;
+	int right = cols - 1;
+	int top = 0;
+	int bottom = rows - 1;
+	int num = rows * cols;
+	while (num >= 1)
+	{
+		//从左到右
+		for (int i = left; i <= right && num >= 1; i++)
+		{
+			res.push_back(matrix[top][i]);
+			num--;
+		}
+		top++;
+		//从上到下
+		for (int i = top; i <= bottom && num >= 1; i++)
+		{
+			res.push_back(matrix[i][right]);
+			num--;
+		}
+		right--;
+		//从右往左
+		for (int i = right; i >= left && num >= 1; i--)
+		{
+			res.push_back(matrix[bottom][i]);
+			num--;
+		}
+		bottom--;
+		//从下往上
+		for (int i = bottom; i >= top && num >= 1; i--)
+		{
+			res.push_back(matrix[i][left]);
+			num--;
+		}
+		left++;
+	}
+	return res;
+}
 
 void test29()
 {
@@ -1239,7 +1285,7 @@ void test29()
 		{7,8,9},
 	};
 
-	auto res = spiralOrder(v);
+	auto res = spiralOrder_ans(v);
 	cout << "res = " << endl;
 }
 
@@ -1617,9 +1663,816 @@ namespace offer
 	}
 }
 
+//36二叉搜索树与双向链表
+void treeToDoublyList_helper(TreeNode* node, TreeNode** lastindex)
+{
+	if (node == nullptr)return;
+
+	if (node->left)
+		treeToDoublyList_helper(node->left, lastindex);
+	node->left = *lastindex;
+	if (*lastindex != nullptr)
+	{
+		(*lastindex)->right = node;
+	}
+	*lastindex = node;
+
+	if (node->right)
+		treeToDoublyList_helper(node->right, lastindex);
+}
+
+TreeNode* treeToDoublyList(TreeNode* root) {
+	if (root == nullptr) return nullptr;
+	TreeNode* plast = nullptr;
+	treeToDoublyList_helper(root, &plast);
+	//plast目前指向链表最后一个元素
+	TreeNode* phead = plast;
+	while (phead != nullptr && phead->left!= nullptr)
+	{
+		phead = phead->left;
+	}
+
+	//处理两个边缘节点
+	phead->left = plast;
+	plast->right = phead;
+	return phead;
+
+}
 void test36()
 {
-	vector<string> v{ "1","2","3","4","5","nullptr","7" };
-	auto root = buildTree(v);
+	vector<string> v{ "4","2","5","1","3","nullptr","nullptr" };
+	auto root = buildTree_construct(v);
+	auto res = treeToDoublyList(root);
+	cout << "ok" << endl;
+}
+
+class Codec {
+public:
+
+	// Encodes a tree to a single string.
+	string serialize(TreeNode* root) {
+
+	}
+
+	// Decodes your encoded data to tree.
+	TreeNode* deserialize(string data) {
+
+	}
+};
+
+//38字符串的排列
+vector<string> res38;
+void permutation_bt(string s,int x)
+{
+	if (x == s.size()-1)
+	{
+		res38.push_back(s);
+		return;
+	}
+	set<int> st;
+	for (int i = x; i < s.size(); i++)
+	{
+		if (st.find(s[i]) != st.end()) continue;
+		st.insert(s[i]);
+		swap(s[i], s[x]);
+		permutation_bt(s, x + 1);
+		swap(s[i], s[x]);
+	}	
+}
+vector<string> permutation(string s) {
+	permutation_bt(s, 0);;
+	return res38;
+}
+
+//39数组中出现次数超过一半的数字
+int majorityElement(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	int len = nums.size();
+	return nums[len / 2];
+}
+
+//40 求最小k个数
+vector<int> getLeastNumbers(vector<int>& arr, int k) {
+	vector<int> vec(k, 0);
+	if (k == 0)return vec;
+
+	priority_queue<int> Q;
+	for (int i = 0; i < k; ++i)
+	{
+		Q.push(arr[i]);
+	}
+	for (int i = k; i < (int)arr.size(); ++i)
+	{
+		if (Q.top() > arr[i])
+		{
+			Q.pop();
+			Q.push(arr[i]);
+		}
+	}
+
+	for (int i = 0; i < k; ++i)
+	{
+		vec[i] = Q.top();
+		Q.pop();
+	}
+	return vec;
+}
+
+//42 设计数据结构找到数据流的中位数
+class MedianFinder_offer
+{
+public:
+	MedianFinder_offer(){}
+
+	void addNum(int num)
+	{
+		if (maxHeap.size() == minHeap.size())
+		{
+			minHeap.push(num);
+			int top = minHeap.top();
+			minHeap.pop();
+			maxHeap.push(top);
+		}
+		else
+		{
+			maxHeap.push(num);
+			int top = maxHeap.top();
+			maxHeap.pop();
+			minHeap.push(top);
+		}
+	}
+
+	double findMedian()
+	{
+		if (maxHeap.size() == minHeap.size())
+			return (maxHeap.top() + minHeap.top()) * 1.0 / 2;
+		else
+		{
+			return maxHeap.top() * 1.0;
+		}
+	}
+private:
+	priority_queue<int, vector<int>, less<int>> maxHeap;//最大堆
+	priority_queue<int, vector<int>, greater<int>> minHeap;//最小堆
+
+};
+
+
+//44数字序列中某一位的数字
+int getnum(int digit)
+{
+	if (digit == 1)
+		return 10;
+	int count = pow(10, digit - 1);
+	return 9 * count;
+}
+int getnumbyindex(int num, int index, int firstnum)
+{
+	int res = num;
+	for (int i = 0; i < index; i++)
+	{
+		res = num % firstnum;
+		firstnum = firstnum / 10;
+	}
+	return res / firstnum;
+}
+int findNthDigit(int n) {
+	if (n < 0)return 0;
+	int digit = 1;
+	int number = 0;
+	int res = 0;
+	while (n >= 0)
+	{
+		number = digit * getnum(digit);
+		if (n < number)
+		{
+			//获取digit的第一位数
+			int firstnum = 0;
+			if (digit > 1)
+			{
+				firstnum = pow(10, digit - 1);
+			}
+			//求是从firstnum开始的第几个数
+			int value = n / digit + firstnum;
+			int index = 0;
+			if (digit > 1)
+			{
+				index = n % digit;
+			}
+			else
+			{
+				return value;
+			}
+			res = getnumbyindex(value, index, firstnum);
+			break;
+		}
+		else
+		{
+			n -= number;
+		}
+		digit++;
+	}
+	return res;
+
+}
+
+void testoffer44()
+{
+	auto res = findNthDigit(10);
+	cout << "res = " << res << endl;
+}
+
+//45 把数组排成最小的数
+void quicksort44(vector<string>& v, int left, int right)
+{
+	if (left >= right)return;
+	string pivotValue = v[left];
+	int i = left, j = right;
+	while (i < j)
+	{
+		while (i < j && v[j] + pivotValue >= pivotValue + v[j])
+			j--;
+		swap(v[i], v[j]);
+		while (i < j && v[i] + pivotValue <= pivotValue + v[i])
+			i++;
+		swap(v[i], v[j]);
+	}
+	quicksort44(v, left, i - 1);
+	quicksort44(v, i + 1, right);
+	
+}
+string minNumber(vector<int>& nums) {
+	string res = "";
+	vector<string> vstr;
+	for (auto i : nums)
+	{
+		auto str = to_string(i);
+		vstr.push_back(str);
+	}
+	quicksort44(vstr, 0, vstr.size() - 1);
+
+	for (auto& tmp : vstr)
+	{
+		res += tmp;
+	}
+	return res;
+}
+
+void testoffer45()
+{
+	vector<int> v{ 3,30,34,5,9 };
+	auto res = minNumber(v);
+	cout << "res = " << res << endl;
+}
+
+//46把数字翻译为字符串
+int translateNum(int num) {
+
+	string str = to_string(num);
+	int len = str.size();
+	vector<int> dp(len+1, 0);
+	dp[0] = 1;
+	dp[1] = 1;
+	for (int i = 2; i <= len; i++)
+	{
+		string tmp = str.substr(i-2,2);
+		int num = atoi(tmp.c_str());
+		if (num < 26 && num >= 10)
+		{
+			dp[i] = dp[i - 1] + dp[i - 2];
+		}
+		else
+		{
+			dp[i] = dp[i - 1];
+		}
+	}
+	return dp[len];
+}
+
+void testoffer46()
+{
+	int n = 12258;
+	int res = translateNum(n);
+	cout << "res = " << res << endl;
+}
+
+//47礼物的最大价值
+int maxValue(vector<vector<int>>& grid) {
+	int res = 0;
+	int rows = grid.size();
+	int cols = grid[0].size();
+	vector<vector<int>> dp(rows + 1, vector<int>(cols + 1, 0));
+	for (int i = 1; i <= rows; i++)
+	{
+		for (int j = 1; j <= cols; j++)
+		{
+			dp[i][j] = max(dp[i - 1][j] + grid[i - 1][j - 1],
+				dp[i][j - 1] + grid[i - 1][j - 1]);
+		}
+	}
+	return dp[rows][cols];
+} 
+
+void testoffer47()
+{
+	vector<vector<int>> v{
+		{1,3,1},
+		{1,5,1},
+		{4,2,1},
+	};
+	int res = maxValue(v);
+	cout << "res = " << res << endl;
+}
+
+//48最长不重复子字符串
+int lengthOfLongestSubstring_48(string s) {
+	int len = s.size();
+	unordered_map<char, int> window;
+	int left = 0, right = 0;
+	int res = 0;
+	while (right < len)
+	{
+		char tmp = s[right];
+		window[tmp]++;
+		right++;
+
+		while (window[tmp] > 1)
+		{
+			char p = s[left];
+			window[p]--;
+			left++;
+		}
+		res = max(res, right - left);
+	}
+	return res;
+}
+
+void testoffer48()
+{
+	string s = "pwwkew";
+	int res = lengthOfLongestSubstring_48(s);
+	cout << "res = " << res << endl;
+}
+
+//49丑数
+int nthUglyNumber(int n) {
+	set<int> numset;
+	priority_queue <int, vector<int>, greater<int> > q;
+	numset.insert(1);
+	q.push(1);
+	int res = 0;
+	vector<int> factor{ 2,3,5 };
+
+	for (int i = 0; i < n; i++)
+	{
+		res = q.top();
+		q.pop();
+
+		for (int i = 0; i < 3; i++)
+		{
+			int tmp = factor[i] * res;
+			if (numset.count(tmp) == 0)
+			{
+				numset.insert(tmp);
+				q.push(tmp);
+			}
+		}
+
+	}
+	return res;
+}
+
+void testoffer49()
+{
+	int res = nthUglyNumber(10);
+	cout << "res = " << res << endl;
+}
+
+//50第一个只出现一次的字符
+char firstUniqChar(string s) {
+	int len = s.size();
+	char res = ' ';
+	unordered_map<char, int> cmap;
+	for (int i = 0; i < len; i++)
+	{
+		cmap[s[i]]++;
+	}
+	for (int i = 0; i < len; i++)
+	{
+		if (cmap[s[i]] == 1)
+		{
+			res = s[i];
+			break;
+		}
+	}
+	return res;
+}
+
+void testoffer50()
+{
+	string s = "abaccdeff";
+	auto res = firstUniqChar(s);
+	cout << "res = " << res << endl;
+}
+
+//51数组中的逆序对
+int res51 = 0;
+void reversePairsMerge(vector<int>& nums, int left, int middle, int right)
+{
+	vector<int> tmp(right - left + 1 , 0);
+	int lindex = left, rindex = middle + 1;
+	int tindex = 0;
+	while (lindex <= middle && rindex <= right)
+	{
+		if (nums[lindex] > nums[rindex])
+		{
+			tmp[tindex++] = nums[rindex++];
+			res51 += middle - lindex + 1;
+
+		}
+		else
+		{
+			tmp[tindex++] = nums[lindex++];
+		}
+	}
+	while (lindex <= middle)
+	{
+		tmp[tindex++] = nums[lindex++];
+	}
+	while (rindex <= right)
+	{
+		tmp[tindex++] = nums[rindex++];
+	}
+	tindex = 0;
+	while (left <= right)
+	{
+		nums[left++] = tmp[tindex++];
+	}
+}
+void reversePairsMergeSort(vector<int>& nums,int left,int right)
+{
+	if (left >= right)return;
+	int middle = (left + right) / 2;
+	reversePairsMergeSort(nums, left, middle);
+	reversePairsMergeSort(nums, middle + 1, right);
+	reversePairsMerge(nums, left, middle, right);
+
+}
+int reversePairs(vector<int>& nums) {
+	int len = nums.size();
+	reversePairsMergeSort(nums, 0, len - 1);
+	return res51;
+}
+
+void testoffer51()
+{
+	vector<int> num{ 7,5,6,4 };
+	auto res = reversePairs(num);
+	cout << "res = " << res << endl;
+}
+
+//52两个链表的第一个公共节点
+ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+	ListNode* res = nullptr;
+	if (headA == nullptr || headB == nullptr) return nullptr;
+	ListNode* ita = headA;
+	ListNode* itb = headB;
+
+	while (ita != nullptr || itb != nullptr)
+	{
+		if (ita == itb)
+		{
+			res = ita;
+			break;
+		}
+		if (ita == nullptr)
+		{
+			ita = headB;
+		}
+		else
+		{
+			ita = ita->next;
+		}
+		if (itb == nullptr)
+		{
+			itb = headA;
+		}
+		else
+		{
+			itb = itb->next;
+		}
+
+		
+		
+	}
+	return res;
+}
+
+void testoffer52()
+{
+	/*ListNode* no1 = new ListNode(4);
+	ListNode* no2 = new ListNode(1);
+	ListNode* no3 = new ListNode(8);
+	ListNode* no4 = new ListNode(4);
+	ListNode* no5 = new ListNode(5);
+	no1->next = no2;
+	no2->next = no3;
+	no3->next = no4;
+	no4->next = no5;
+	ListNode* no6 = new ListNode(5);
+	ListNode* no7 = new ListNode(0);
+	ListNode* no8 = new ListNode(1);
+	no6->next = no7;
+	no7->next = no8;
+	no8->next = no3;*/
+	ListNode* no1 = new ListNode(3);
+	ListNode* no2 = new ListNode(2);
+	ListNode* no3 = new ListNode(3);
+	no2->next = no3;
+	ListNode* res = getIntersectionNode(no1, no2);
+	cout << "res = " << res->val << endl;
+
+}
+
+//53在排序数组中查找数字1
+int search_offer53(vector<int>& nums, int target) {
+	int len = nums.size();
+	int left = 0, right = len - 1;
+	int targetIndex = -1;
+	int res = 0;
+	while (left <= right)
+	{
+		int middle = (left + right) / 2;
+		if (nums[middle] == target)
+		{
+			targetIndex = middle;
+			break;
+		}
+		else if (nums[middle] < target)
+		{
+			left = middle + 1;
+		}
+		else
+		{
+			right = middle - 1;
+		}
+
+	}
+	if (targetIndex >= 0)
+	{
+		res = 1;
+		int right = targetIndex + 1;
+		while (right < len && nums[right] == target)
+		{
+			res++;
+			right++;
+		}
+		int left = targetIndex - 1;
+		while (left >= 0 && nums[left] == target)
+		{
+			res++;
+			left--;
+		}
+	}
+	return res;
+}
+
+void testoffer53()
+{
+	vector<int> v{1 };
+	int res = search_offer53(v, 1);
+	cout << "res = " << res << endl;
+}
+
+//寻找缺失的数字
+int missingNumber(vector<int>& nums) {
+	int len = nums.size();
+	int left = 0, right = len - 1;
+	int res = 0;
+	while (left <= right)
+	{
+		int mid = (left + right) / 2;
+		if (nums[mid] == mid)
+		{
+			if (mid == 0 || nums[mid - 1] == mid - 1)
+				return mid;
+			left = mid + 1;
+		}
+		else
+		{
+			right = mid - 1;
+		}
+	}
+	return res;
+}
+void testoffer53_2()
+{
+	vector<int> v{ 1,2 };
+	int res = missingNumber(v);
+	cout << "res = " << res << endl;
+}
+//54 二叉搜索树的第k大节点
+int m_k = 0;
+int m_value = -1;
+void dfs(TreeNode* root)
+{
+	if (root == nullptr) return;
+
+	dfs(root->right);
+	m_k--;
+	if (m_k == 0)
+	{
+		m_value = root->val;
+	}
+	dfs(root->left);
+}
+int kthLargest(TreeNode* root, int k) {
+	m_k = k;
+	dfs(root);
+	return m_value;
+}
+
+//55平衡二叉树
+int isBalanced_offer55_help(TreeNode* root)
+{
+	if (root == nullptr)
+		return 0;
+	int left = isBalanced_offer55_help(root->left);
+
+	int right = isBalanced_offer55_help(root->right);
+	if (left == -1 || right == -1 || abs(left - right) > 1)
+		return -1;
+	else
+		return 1+ max(left,right);
+}
+bool isBalanced_offer55(TreeNode* root)
+{
+	return isBalanced_offer55_help(root) >= 0 ? true : false;
+}
+
+//56数组中数字出现次数
+int find1bitindex(int result)
+{
+	int index = 0;
+	while (((result & 1)== 0)&&index < 8*sizeof(int))
+	{
+		result = result >> 1;
+		index++;
+	}
+	return index;
+}
+bool isbit1(int num,int index)
+{
+	num = num >> index;
+	return (num & 1);
+}
+vector<int> singleNumbers(vector<int>& nums) {
+	vector<int> res;
+	int len = nums.size();
+	if (len == 0) return res;
+	int spresult = 0;
+	for (int i = 0; i < len; i++)
+	{
+		spresult = spresult ^ nums[i];
+	}
+	int index = find1bitindex(spresult);
+	int res1 = 0, res2 = 0;
+	for (int i = 0; i < len; i++)
+	{
+		if (isbit1(nums[i],index))
+		{
+			res1 = res1 ^ nums[i];
+		}
+		else
+		{
+			res2 = res2 ^ nums[i];
+		}
+	}
+	res.push_back(res1);
+	res.push_back(res2);
+	return res;
+}
+
+//数组中除了一个数字只出现一次之外，其他数字都出现三次
+int singleNumber_2(vector<int>& nums) {
+	int res = 0, bit = 0;
+	for (int i = 30; i >= 0; i--)
+	{
+		for (int num : nums)
+		{
+			bit += (num >> i) & 1;
+		}
+		res = res << 1;
+		res += bit % 3;
+		bit = 0;
+	}
+	return res;
+}
+
+void testoffer56()
+{
+	vector<int> v{ 3,4,3,3 };
+	int res = singleNumber_2(v);
+	cout << "res = " << res << endl;
+}
+
+//57和为s的两个数字
+vector<int> twoSum_offer(vector<int>& nums, int target) {
+	vector<int> res;
+	int len = nums.size();
+	if (len == 0)return res;
+	int left = 0, right = len - 1;
+	while (left < right)
+	{
+		if (nums[left] + nums[right] == target)
+		{
+			break;
+		}
+		else if (nums[left] + nums[right] > target)
+		{
+			right--;
+		}
+		else
+		{
+			left++;
+		}
+	}
+	if (left < right)
+	{
+		res.push_back(nums[left]);
+		res.push_back(nums[right]);
+	}
+	return res;
+}
+
+//57-2
+vector<vector<int>> findContinuousSequence(int target) {
+	vector<vector<int>> res;
+	int n = target / 2 + 1;
+	vector<int> num;
+	for (int i = 0; i <= n; i++)
+		num.push_back(i);
+	vector<int> presum(n+1, 0);
+	for (int i = 1; i <= n; i++)
+	{
+		presum[i] = presum[i - 1] + i;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		int j = n;
+		while (i < j)
+		{
+			if (presum[j] - presum[i] == target)
+			{
+				vector<int> tmp(num.begin() + i + 1, num.begin() + j+1);
+				res.push_back(tmp);
+				break;
+			}
+			else if (presum[j] - presum[i] > target)
+			{
+				j--;
+			}
+			else
+				break;
+		}
+		
+	}
+	return res;
+}
+
+
+vector<vector<int>> findContinuousSequence_2(int target) {
+	vector<vector<int>> res;
+	int n = target / 2 + 1;
+	vector<int> num;
+	for (int i = 0; i <= n; i++)
+		num.push_back(i);
+
+	int left = 1, right = 1;
+	int windowsum = 1;
+	while (right < n)
+	{
+		right++;
+		windowsum += right;
+
+		while (windowsum > target)
+		{
+			windowsum -= left;
+			left++;
+		}
+		if (windowsum == target)
+		{
+			vector<int> tmp(num.begin() + left, num.begin() + right + 1);
+			res.push_back(tmp);
+		}
+		
+	}
+
+	return res;
+}
+void test57_2_offer_test()
+{
+	auto res = findContinuousSequence_2(15);
 	cout << "ok" << endl;
 }
